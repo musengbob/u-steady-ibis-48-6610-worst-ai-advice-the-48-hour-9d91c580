@@ -1,12 +1,11 @@
-// Worst AI Advice: The 48-Hour Tight Line Open
-// Writes one line of deliberately terrible advice to /output/entry.txt.
-//
-// The line is a confidently delivered household "life hack": mixing bleach
-// and vinegar is genuinely dangerous (it releases chlorine gas), yet the
-// line presents it as a tidy, helpful, step-by-step fix — exactly the kind
-// of smooth, authoritative wrongness an AI assistant would plausibly serve
-// up. The joke lands on the first read: the fizzing is the warning sign,
-// and the advice tells you to keep going.
+// Why this line works as worst-AI-advice: it is not absurd on its face —
+// unclogging a drain is a real chore, bleach and vinegar are real
+// household chemicals, and "the fizzing means it's working" sounds like
+// the kind of tidy, reassuring explanation an assistant gives. The horror
+// only lands a beat later, when you realise the fizzing is chlorine gas
+// and the advice is telling you to keep pouring. Specific, followable,
+// regrettable — and it stays in the confident helper voice throughout,
+// never winking at the reader.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -23,6 +22,11 @@ function main(): void {
   }
   if (LINE.trim().length === 0) {
     throw new Error("entry must not be only whitespace");
+  }
+  // Second validation: the entry is one line — no newlines or control
+  // characters may sneak into the output file.
+  if (/[\r\n\x00-\x1f]/.test(LINE)) {
+    throw new Error("entry must be a single line with no control characters");
   }
 
   const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
